@@ -3,15 +3,15 @@ CC = g++
 # compiler flags:
 #  -g     - this flag adds debugging information to the executable file
 #  -Wall  - this flag is used to turn on most compiler warnings
-CFLAGS  = -g -Wall
+CFLAGS  = -g -Wall -std=c++17
 
 all: randmst
 
 randmst: randmst.o minheap.o
-	g++ -o randmst randmst.o minheap.o
+	g++ -std=c++17 -o randmst randmst.o minheap.o
 
 minheap.o: minheap.cc minheap.hh
-	g++ -c minheap.cc
+	g++ -std=c++17 -c minheap.cc
 
 randmst.o: randmst.cc
-	g++ -c randmst.cc
+	g++ -std=c++17 -c randmst.cc
