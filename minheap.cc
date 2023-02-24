@@ -30,6 +30,10 @@ tuple<int, double> Heap::peekmin () {
     return heap[0];
 }
 
+int Heap::size () {
+    return heap.size();
+}
+
 void Heap::heapify (int i) { // invariant, everything above, and below N are independent max heaps.
     int l = left(i);
     int r = right(i);

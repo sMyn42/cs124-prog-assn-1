@@ -15,6 +15,7 @@ class Heap {
         tuple<int, double> peekmin ();
         void heapify (int i);
         int test_heap ();
+        int size ();
 };
 int parent (int i);
 int left (int i);
