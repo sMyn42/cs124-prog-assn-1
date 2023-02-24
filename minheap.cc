@@ -7,26 +7,37 @@
 
 using namespace std;
 
-void Heap::insert (tuple<int, double> v) {
+Heap::Heap (int mr) {
+    max_relevant = mr;
+}
+
+Heap::Heap () {
+    max_relevant = INT_MAX;
+}
+
+void Heap::insert (tuple<int, float> v) {
     heap.push_back(v);
     int n = heap.size() - 1;
     while (n != 0 && get<1>(heap[parent(n)]) > get<1>(heap[n])) {
-        tuple<int, double> temp = heap[n];
+        tuple<int, float> temp = heap[n];
         heap[n] = heap[parent(n)];
         heap[parent(n)] = temp;
         n = parent(n);
     }
+    if (heap.size() > max_relevant + 1000) {
+        heap.resize(max_relevant);
+    }
 }
 
-tuple<int, double> Heap::delmin () {
-    tuple<int, double> min = heap[0];
+tuple<int, float> Heap::delmin () {
+    tuple<int, float> min = heap[0];
     heap[0] = heap.back();    
     heap.resize((heap.size() - 1));
     heapify(0);
     return min;
 }
 
-tuple<int, double> Heap::peekmin () {
+tuple<int, float> Heap::peekmin () {
     return heap[0];
 }
 
@@ -50,7 +61,7 @@ void Heap::heapify (int i) { // invariant, everything above, and below N are ind
 
     // swap largest and top node.
     if (smallest != i) {
-        tuple<int, double> temp = heap[i];
+        tuple<int, float> temp = heap[i];
         heap[i] = heap[smallest];
         heap[smallest] = temp;
         heapify(smallest);
