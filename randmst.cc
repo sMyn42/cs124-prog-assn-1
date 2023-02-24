@@ -88,7 +88,7 @@ int total_tree_weight(const vector<vector<pair<int, int>>>& adj_list) {
                 self(self, v);
             }
         }
-    };
+    }; 
     dfs(dfs, 0);
     return total_weight;
 }
