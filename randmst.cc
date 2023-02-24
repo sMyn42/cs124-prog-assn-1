@@ -1,7 +1,3 @@
-/*
- * randmst.cc
- * Author: Saketh Mynampati 
- */
 #include <iostream>
 #include <cstdlib>
 #include <random>
@@ -77,5 +73,25 @@ int main(int argc, char **argv)
     return 0;
 
 }
+
+// Function to find total weight of tree given the adjacency list
+int total_tree_weight(const vector<vector<pair<int, int>>>& adj_list) {
+    int n = adj_list.size();
+    vector<bool> visited(n, false);
+    int total_weight = 0;
+    // Perform DFS starting from node 0
+    auto dfs = [&](auto&& self, int u) -> void {
+        visited[u] = true;
+        for (auto [v, weight] : adj_list[u]) {
+            if (!visited[v]) {
+                total_weight += weight;
+                self(self, v);
+            }
+        }
+    };
+    dfs(dfs, 0);
+    return total_weight;
+}
+
 
 
