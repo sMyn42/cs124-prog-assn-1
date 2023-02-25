@@ -55,7 +55,7 @@
 # ./randmst 0 262144 5 4
 
 
-./randmst 0 131072 5 1
 ./randmst 0 131072 5 2
 ./randmst 0 131072 5 3
 ./randmst 0 131072 5 4
+./randmst 0 131072 5 1

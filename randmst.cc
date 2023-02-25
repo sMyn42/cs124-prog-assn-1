@@ -247,12 +247,12 @@ int main(int argc, char **argv)
 
     double avg_w = total_weight / ntrials;
 
-    // ofstream myfile;
-    // myfile.open("randmst.log", std::ios_base::app);
+    ofstream myfile;
+    myfile.open("randmst.log", std::ios_base::app);
     char str[100];
     snprintf(str, 45, "%.7f %i %i %i in %ld seconds\n", avg_w, npoints, ntrials, ndim, time(0) - ts);
-    // myfile << str;
-    // myfile.close();
+    myfile << str;
+    myfile.close();
 
     printf("%.5f %i %i %i\n", avg_w, npoints, ntrials, ndim);
 
