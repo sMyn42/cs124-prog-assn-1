@@ -26,7 +26,7 @@ using namespace std;
 
 double k (int npoints, int ndim) {
     if (ndim != 1) return npoints > 4000 ? pow(10, (1.0/ndim)) * pow(npoints, -(1.0/ndim)) : 2;
-    return 5.2/(npoints + 1);
+    return 10.0/(npoints + 1);
 }
 
 double distance (tuple<double, double, double, double> x, tuple<double, double, double, double> y) {
@@ -62,18 +62,33 @@ int main(int argc, char **argv)
 
         vector< tuple<double, double, double, double> > vert;
 
+        Heap H;
+        unordered_set<int> S;
+
+        double* dist = new double[npoints];
+        int* prev = new int[npoints];
+        int s = 0;
+        double tree_weight = 0;
+        int num_visited = 0;
+        double max_len = k(npoints, ndim);
+        vector< pair<int, double> >* E = new vector< pair<int, double> >[npoints];
+
         if (ndim == 1) {
             //Prim's for 1-Dim space:
 
-            Heap H;
-            unordered_set<int> S;
+            // Create adj list with pruning
+            int num_edges_added = 0;
+            for (int v = 0; v < npoints; v++) {
+                for (int u = 0; u < npoints; u++) {
+                    double ell = dis(gen64);
+                    if (ell < max_len) {
+                        E[v].push_back(make_tuple(u, ell));
+                        num_edges_added++;
+                    }
+                }
+            }
 
-            double* dist = new double[npoints];
-            int* prev = new int[npoints];
-            int s = 0;
-            double tree_weight = 0;
-            double max_len = k(npoints, ndim);
-            int num_visited = 0;
+            //Prim's for N-Dim spaces:
 
             H.insert(make_tuple(s, 0));
 
@@ -87,39 +102,45 @@ int main(int argc, char **argv)
                 int v = get<0>(H.delmin());
                 S.insert(v);
 
-                if (S.size() > num_visited) {
-                    // printf("Num Visited: %lu \n", S.size());
-                    num_visited = S.size();
-                }
+                unsigned long adj_size = E[v].size();
 
-                for (int w = 0; w < npoints; w++) {
-                    if (S.find(w) != S.end()) {
+                // inspect all adjacent vertices
+                for (int w = 0; w < adj_size; w++) {
+                    if (S.find(E[v][w].first) != S.end()) {
                         continue;
                     }
-                    double ell = dis(gen64);
-                    if (ell > max_len) {
-                        continue;
+
+                    double ell = E[v][w].second;
+
+                    if (dist[E[v][w].first] > ell) {
+                        dist[E[v][w].first] = ell;
+                        prev[E[v][w].first] = v;
+
+                        // Add vertex to frontier with given distance.
+                        H.insert(make_tuple(E[v][w].first, ell));
                     }
-                    if (dist[w] > ell) {
-                        dist[w] = ell;
-                        prev[w] = v;
-                        H.insert(make_tuple(w, dist[w]));
-                    }
+
                     if (H.size() == 0) {
-                        H.insert(make_tuple(w, max_len));
-                        // printf("Sim Edge");
+                        H.insert(make_tuple(E[v][w].first, max_len));
+                        printf("Sim Edge");
                     }
                 }
             }
 
+            // Calculate weights after Prim's
+            int c = 0;
             for (int v = 1; v < npoints; v++) {
                 tree_weight = tree_weight + dist[v];
+                if (dist[v] == max_len) {
+                    c++;
+                }
             }
 
             total_weight = total_weight + tree_weight;
 
-            delete[](dist);
-            delete[](prev);
+            delete[] dist;
+            delete[] prev;
+            delete[] E;
         }
         
         if (ndim == 2 || ndim == 3 || ndim == 4) {
@@ -135,10 +156,6 @@ int main(int argc, char **argv)
 
             // printf("Time taken to add vertices: %li \n", time(0) - ts);
             int ta = time(0);
-
-            double max_len = k(npoints, ndim);
-
-            vector< pair<int, double> >* E = new vector< pair<int, double> >[npoints];
 
             // Create adj list with pruning
             int num_edges_added = 0;
@@ -159,14 +176,6 @@ int main(int argc, char **argv)
             ta = time(0);
 
             //Prim's for N-Dim spaces:
-            Heap H;
-            unordered_set<int> S;
-
-            double* dist = new double[npoints];
-            int* prev = new int[npoints];
-            int s = 0;
-            double tree_weight = 0;
-            int num_visited = 0;
 
             H.insert(make_tuple(s, 0));
 
