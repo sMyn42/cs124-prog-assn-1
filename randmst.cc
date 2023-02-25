@@ -88,7 +88,7 @@ int main(int argc, char **argv)
                 S.insert(v);
 
                 if (S.size() > num_visited) {
-                    printf("Num Visited: %lu \n", S.size());
+                    // printf("Num Visited: %lu \n", S.size());
                     num_visited = S.size();
                 }
 
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
                     }
                     if (H.size() == 0) {
                         H.insert(make_tuple(w, max_len));
-                        printf("Sim Edge");
+                        // printf("Sim Edge");
                     }
                 }
             }
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
                 vert.push_back(make_tuple(coords[0], coords[1], coords[2], coords[3]));
             }
 
-            printf("Time taken to add vertices: %li \n", time(0) - ts);
+            // printf("Time taken to add vertices: %li \n", time(0) - ts);
             int ta = time(0);
 
             double max_len = k(npoints, ndim);
@@ -150,12 +150,12 @@ int main(int argc, char **argv)
                         num_edges_added++;
                     }
                 }
-                printf("Edges added after vertex %i: %i \n", v, num_edges_added);
+                // printf("Edges added after vertex %i: %i \n", v, num_edges_added);
             }
 
-            printf("Edges added: %i \n", num_edges_added);
+            // printf("Edges added: %i \n", num_edges_added);
 
-            printf("Time taken to add edges: %li \n", time(0) - ta);
+            // printf("Time taken to add edges: %li \n", time(0) - ta);
             ta = time(0);
 
             //Prim's for N-Dim spaces:
@@ -215,7 +215,7 @@ int main(int argc, char **argv)
 
             // printf("Size of heap after Prims: %i\n ", H.size());
 
-            printf("Time taken to run Prim's: %li\n", time(0) - ta);
+            // printf("Time taken to run Prim's: %li\n", time(0) - ta);
             ta = time(0);
 
 
@@ -236,12 +236,12 @@ int main(int argc, char **argv)
             delete[] prev;
             delete[] E;
 
-            printf("Num Visited: %lu \n", S.size());
+            // printf("Num Visited: %lu \n", S.size());
 
-            printf("Max Length: %.4f \n", max_len);
+            // printf("Max Length: %.4f \n", max_len);
         }
 
-        printf("Trial %i took %ld seconds. \n", t, time(0) - ts);
+        // printf("Trial %i took %ld seconds. \n", t, time(0) - ts);
 
     }
 
