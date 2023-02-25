@@ -28,4 +28,4 @@ The test_heap method is a simple test suite for the heap. It inserts three tuple
 
  
 # Result discussion:
-For large values if n, 
+For large values if n, j
